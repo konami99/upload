@@ -3,15 +3,13 @@ class HomeController < ApplicationController
   end
 
   def upload
-    params[:csv].tempfile.read.each_line do |line|
-
+    CSV.foreach(params[:csv].tempfile) do |line|
+      next if line[0] == "name"
+      Person.create \
+        name: line[0],
+        birthday: line[1],
+        number: line[2],
+        description: line[3]
     end
-  end
-
-  private
-
-  def task_params
-    binding.pry
-    params.permit(:myfile)
   end
 end
