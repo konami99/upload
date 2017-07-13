@@ -8,7 +8,21 @@ class Home extends React.Component {
 
   upload(event) {
     event.preventDefault()
-    POST(event, this.uploaded, this, "upload")
+    var fileSelect = document.getElementById("myfile");
+    var files = fileSelect.files;
+    var formData = new FormData();
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      formData.append('csv', file, file.name);
+    }
+    console.log(formData)
+    fetch("/upload.json", {
+      method: "post",
+      body: formData
+    }).then((response) => {
+      response.json().then((data) => {
+      })
+    })
   }
 
   uploaded() {
@@ -24,7 +38,7 @@ class Home extends React.Component {
           </div>
           <form className="form-group" id="task-form" encType="multipart/form-data" method="post" action="/upload" onSubmit={ this.upload }>
             <div className="form-group">
-              <input name="myfile" type="file" />
+              <input id="myfile" name="myfile" type="file" />
             </div>
             <input type="submit" className="btn btn-primary" value="submit" />
           </form>
