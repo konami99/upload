@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+.form-group,
+.table {
+  margin-top: 20px;
+}
+
+.filter {
+  width: 100%;
+}
