@@ -4,16 +4,26 @@ class Home extends React.Component {
 
     this.state = {
       people: null,
+      mofifiedPeople: null,
       sortOrder: "ascending"
     }
 
     this.upload = this.upload.bind(this)
     this.getPeopleList = this.getPeopleList.bind(this)
     this.sort = this.sort.bind(this)
+    this.filter = this.filter.bind(this)
   }
 
   componentDidMount() {
     this.getPeopleList()
+  }
+
+  filter(event) {
+    var filter = event.currentTarget.value.toLowerCase()
+    filteredPeople = this.state.people.filter((person) => {
+      return person["name"].toLowerCase().includes(filter)
+    })
+    this.setState({mofifiedPeople: filteredPeople})
   }
 
   upload(event) {
@@ -41,7 +51,10 @@ class Home extends React.Component {
       method: "get",
     }).then((response) => {
       response.json().then((data) => {
-        this.setState({people: data})
+        this.setState({
+          people: data,
+          mofifiedPeople: data
+        })
       })
     })
   }
@@ -70,7 +83,7 @@ class Home extends React.Component {
       }
     })
 
-    this.setState({people: sortedPeople})
+    this.setState({mofifiedPeople: sortedPeople})
     if (this.state.sortOrder === "ascending") {
       this.setState({sortOrder: "descending"})
     } else {
@@ -79,7 +92,7 @@ class Home extends React.Component {
   }
 
   renderTable() {
-    if (this.state.people && this.state.people.length) {
+    if (this.state.mofifiedPeople && this.state.mofifiedPeople.length) {
       return <table className="table table-striped">
         <thead>
           <tr>
@@ -91,7 +104,7 @@ class Home extends React.Component {
         </thead>
         <tbody>
         {
-          this.state.people.map((person) => {
+          this.state.mofifiedPeople.map((person) => {
             return <tr key={ person.id }>
               <td>{ person.name }</td>
               <td>{ person.birthday }</td>
@@ -110,15 +123,13 @@ class Home extends React.Component {
       <div className="row">
         <div className="col-0 col-md-3"></div>
         <div className="col-12 col-md-6">
-          <div className="page-header">
-            <h1>Upload file</h1>
-          </div>
           <form className="form-group" id="task-form" encType="multipart/form-data" method="post" action="/upload" onSubmit={ this.upload }>
             <div className="form-group">
               <input id="myfile" name="myfile" type="file" />
             </div>
-            <input type="submit" className="btn btn-primary" value="submit" />
+            <input type="submit" className="btn btn-primary" value="Upload" />
           </form>
+          <input type="text" className="filter" placeholder="filter" onChange={ this.filter } />
           { this.renderTable() }
         </div>
         <div className="col-0 col-md-3"></div>
