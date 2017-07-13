@@ -2,11 +2,16 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
 
-    this.submit = this.submit.bind(this)
+    this.upload = this.upload.bind(this)
+    this.uploaded = this.uploaded.bind(this)
   }
 
-  submit(event) {
+  upload(event) {
     event.preventDefault()
+    POST(event, this.uploaded, this, "upload")
+  }
+
+  uploaded() {
   }
 
   render() {
@@ -17,7 +22,7 @@ class Home extends React.Component {
           <div className="page-header">
             <h1>Upload file</h1>
           </div>
-          <form className="form-group" id="task-form" encType="multipart/form-data" method="post" onSubmit={ this.submit }>
+          <form className="form-group" id="task-form" encType="multipart/form-data" method="post" action="/upload" onSubmit={ this.upload }>
             <div className="form-group">
               <input name="myfile" type="file" />
             </div>
