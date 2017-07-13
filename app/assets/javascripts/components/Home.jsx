@@ -3,11 +3,17 @@ class Home extends React.Component {
     super(props)
 
     this.state = {
-      people: null
+      people: null,
+      sortOrder: "ascending"
     }
 
     this.upload = this.upload.bind(this)
     this.getPeopleList = this.getPeopleList.bind(this)
+    this.sort = this.sort.bind(this)
+  }
+
+  componentDidMount() {
+    this.getPeopleList()
   }
 
   upload(event) {
@@ -40,15 +46,47 @@ class Home extends React.Component {
     })
   }
 
+  sort(event) {
+    var sortBy = event.currentTarget.getAttribute("data-column")
+    sortedPeople = this.state.people.sort((a, b) => {
+      var nameA = a[sortBy]
+      var nameB = b[sortBy]
+      if (this.state.sortOrder === "ascending") {
+        if (nameA < nameB) {
+          return 1
+        }
+        if (nameA > nameB) {
+          return -1
+        }
+        return 0
+      } else {
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+        return 0
+      }
+    })
+
+    this.setState({people: sortedPeople})
+    if (this.state.sortOrder === "ascending") {
+      this.setState({sortOrder: "descending"})
+    } else {
+      this.setState({sortOrder: "ascending"})
+    }
+  }
+
   renderTable() {
-    if (this.state.people !== null) {
+    if (this.state.people && this.state.people.length) {
       return <table className="table table-striped">
         <thead>
           <tr>
-            <th>Name</th>
+            <th data-column="name" onClick={ this.sort }>Name</th>
             <th>Birthday</th>
-            <th>Number</th>
-            <th>Description</th>
+            <th data-column="number" onClick={ this.sort }>Number</th>
+            <th data-column="description" onClick={ this.sort }>Description</th>
           </tr>
         </thead>
         <tbody>
