@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root "home#index"
+  resources :people, only: [:index]
 
   post "/upload", to: "home#upload"
+
+  root "home#index"
 end

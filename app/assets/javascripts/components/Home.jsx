@@ -2,8 +2,11 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      people: null
+    }
+
     this.upload = this.upload.bind(this)
-    this.uploaded = this.uploaded.bind(this)
     this.getPeopleList = this.getPeopleList.bind(this)
   }
 
@@ -27,16 +30,41 @@ class Home extends React.Component {
   }
 
   getPeopleList() {
+    this.setState({people: null})
     fetch("/people.json", {
       method: "get",
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data)
+        this.setState({people: data})
       })
     })
   }
 
-  uploaded() {
+  renderTable() {
+    if (this.state.people !== null) {
+      return <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Birthday</th>
+            <th>Number</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+        {
+          this.state.people.map((person) => {
+            return <tr key={ person.id }>
+              <td>{ person.name }</td>
+              <td>{ person.birthday }</td>
+              <td>{ person.number }</td>
+              <td>{ person.description }</td>
+            </tr>
+          })
+        }
+        </tbody>
+      </table>
+    }
   }
 
   render() {
@@ -53,6 +81,7 @@ class Home extends React.Component {
             </div>
             <input type="submit" className="btn btn-primary" value="submit" />
           </form>
+          { this.renderTable() }
         </div>
         <div className="col-0 col-md-3"></div>
       </div>
