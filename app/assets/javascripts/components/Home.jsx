@@ -4,6 +4,7 @@ class Home extends React.Component {
 
     this.upload = this.upload.bind(this)
     this.uploaded = this.uploaded.bind(this)
+    this.getPeopleList = this.getPeopleList.bind(this)
   }
 
   upload(event) {
@@ -15,12 +16,22 @@ class Home extends React.Component {
       var file = files[i];
       formData.append('csv', file, file.name);
     }
-    console.log(formData)
     fetch("/upload.json", {
       method: "post",
       body: formData
     }).then((response) => {
+      if (response.status === 200) {
+        this.getPeopleList()
+      }
+    })
+  }
+
+  getPeopleList() {
+    fetch("/people.json", {
+      method: "get",
+    }).then((response) => {
       response.json().then((data) => {
+        console.log(data)
       })
     })
   }

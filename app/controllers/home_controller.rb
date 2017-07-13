@@ -11,5 +11,7 @@ class HomeController < ApplicationController
         number: line[2],
         description: line[3]
     end
+
+    head :ok
   end
 end
