@@ -4,6 +4,11 @@ class HomeController < ApplicationController
 
   def upload
     require 'csv'
+    unless uploaded_csv?
+      render status: :bad_request, json: { response: "file is not format of csv" }
+      return
+    end
+
     CSV.foreach(params[:csv].tempfile) do |line|
       next if line[0] == "name"
       Person.create \
@@ -14,5 +19,11 @@ class HomeController < ApplicationController
     end
 
     head :ok
+  end
+
+  private
+
+  def uploaded_csv?
+    params[:csv].content_type == "text/csv"
   end
 end
