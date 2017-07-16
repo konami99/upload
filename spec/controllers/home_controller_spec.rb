@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe HomeController do
   it "create person records" do
     upload = ActionDispatch::Http::UploadedFile.new({
+      filename: "sentia-coding-test-file.csv",
+      type: "text/csv",
       tempfile: File.new("#{Rails.root}/spec/controllers/sentia-coding-test-file.csv")
     })
     allow(controller).to receive(:params).and_return({csv: upload})
