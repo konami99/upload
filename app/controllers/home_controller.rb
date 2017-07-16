@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   end
 
   def upload
+    require 'csv'
     CSV.foreach(params[:csv].tempfile) do |line|
       next if line[0] == "name"
       Person.create \

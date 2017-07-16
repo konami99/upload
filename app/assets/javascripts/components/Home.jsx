@@ -28,21 +28,20 @@ class Home extends React.Component {
 
   upload(event) {
     event.preventDefault()
-    var fileSelect = document.getElementById("myfile");
-    var files = fileSelect.files;
-    var formData = new FormData();
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      formData.append('csv', file, file.name);
+    var fileSelect = document.getElementById("myfile")
+    var files = fileSelect.files
+    if (files[0].type === "text/csv") {
+      var formData = new FormData()
+      formData.append('csv', files[0], files[0].name)
+      fetch("/upload.json", {
+        method: "post",
+        body: formData
+      }).then((response) => {
+        if (response.status === 200) {
+          this.getPeopleList()
+        }
+      })
     }
-    fetch("/upload.json", {
-      method: "post",
-      body: formData
-    }).then((response) => {
-      if (response.status === 200) {
-        this.getPeopleList()
-      }
-    })
   }
 
   getPeopleList() {
