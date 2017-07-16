@@ -20,7 +20,7 @@ class Home extends React.Component {
 
   filter(event) {
     var filter = event.currentTarget.value.toLowerCase()
-    filteredPeople = this.state.people.filter((person) => {
+    var filteredPeople = this.state.people.filter((person) => {
       return person["name"].toLowerCase().includes(filter)
     })
     this.setState({mofifiedPeople: filteredPeople})
@@ -61,10 +61,11 @@ class Home extends React.Component {
 
   sort(event) {
     var sortBy = event.currentTarget.getAttribute("data-column")
-    sortedPeople = this.state.people.sort((a, b) => {
+    var sortedPeople = this.state.people.sort((a, b) => {
       var nameA = a[sortBy]
       var nameB = b[sortBy]
       if (this.state.sortOrder === "ascending") {
+        event.currentTarget.innerHTML = event.currentTarget.innerHTML + " ^"
         if (nameA < nameB) {
           return 1
         }
@@ -73,6 +74,7 @@ class Home extends React.Component {
         }
         return 0
       } else {
+        event.currentTarget.innerHTML = event.currentTarget.innerHTML + " v"
         if (nameA < nameB) {
           return -1
         }
@@ -96,10 +98,10 @@ class Home extends React.Component {
       return <table className="table table-striped">
         <thead>
           <tr>
-            <th data-column="name" onClick={ this.sort }>Name</th>
-            <th>Birthday</th>
-            <th data-column="number" onClick={ this.sort }>Number</th>
-            <th data-column="description" onClick={ this.sort }>Description</th>
+            <th className="header" data-column="name" onClick={ this.sort }>Name</th>
+            <th className="header" data-column="birthday" onClick={ this.sort }>Birthday</th>
+            <th className="header" data-column="number" onClick={ this.sort }>Number</th>
+            <th className="header" data-column="description" onClick={ this.sort }>Description</th>
           </tr>
         </thead>
         <tbody>

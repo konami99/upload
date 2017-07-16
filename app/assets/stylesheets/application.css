@@ -22,3 +22,7 @@
 .filter {
   width: 100%;
 }
+
+.header {
+  cursor: pointer;
+}
