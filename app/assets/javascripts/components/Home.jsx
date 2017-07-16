@@ -60,28 +60,23 @@ class Home extends React.Component {
 
   sort(event) {
     var sortBy = event.currentTarget.getAttribute("data-column")
-    var sortedPeople = this.state.people.sort((a, b) => {
-      var nameA = a[sortBy]
-      var nameB = b[sortBy]
+    var sortedPeople = this.state.people.sort((firstElement, secondElement) => {
+      var firstValue = firstElement[sortBy]
+      var secondValue = secondElement[sortBy]
       if (this.state.sortOrder === "ascending") {
-        event.currentTarget.innerHTML = event.currentTarget.innerHTML + " ^"
-        if (nameA < nameB) {
+        if (firstValue < secondValue) {
           return 1
-        }
-        if (nameA > nameB) {
+        } else if (firstValue > secondValue) {
           return -1
         }
-        return 0
       } else {
-        event.currentTarget.innerHTML = event.currentTarget.innerHTML + " v"
-        if (nameA < nameB) {
+        if (firstValue < secondValue) {
           return -1
-        }
-        if (nameA > nameB) {
+        } else if (firstValue > secondValue) {
           return 1
         }
-        return 0
       }
+      return 0
     })
 
     this.setState({mofifiedPeople: sortedPeople})
