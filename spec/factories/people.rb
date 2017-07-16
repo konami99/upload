@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :person do
-    name "MyString"
-    birthday "2017-07-13"
-    number 1
-    description "MyText"
+    name { Faker::Name.first_name }
+    birthday { Faker::Date.birthday }
+    number { Faker::Number.number(2) }
+    description { Faker::Lorem.paragraph }
   end
 end
